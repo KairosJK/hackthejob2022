@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  background-color: #F2AA4CFF;
-  color: #101820FF;
+  background-color: #97BC62FF;
+  color: #2C5F2D;
 }
 
 
@@ -16,4 +16,10 @@
 
 .App-Base {
 
+}
+
+img {
+  height: 50vh;
+  width: 50vh;
+  border: 2vh solid #2C5F2D;
 }
