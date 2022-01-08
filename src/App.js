@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { div } from 'prelude-ls';
 import { useEffect, useState} from 'react';
 import './App.css';
 
@@ -47,6 +48,7 @@ function App() {
         type:"artist"
       }
     })
+    console.log(data);
     setArtists(data.artists.items)
   }
 
@@ -55,9 +57,16 @@ function App() {
       <div key={artist.id}>
         <br></br>
         {artist.images.length ? <img src={artist.images[0].url}/> : <div>No Image could be found</div>}
-        <p style="border-style=dobule 5px">{artist.name}</p>
+        <p style={{fontWeight:"bold"}}>{artist.name}</p>
+        <p style={{fontWeight:"bold"}}>{artist.genres[0]}</p>
+        <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p>
       </div>
     ))
+  }
+
+  const goToAuth = () => {
+    // Redirects user to Authentication and Login
+    window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
   }
 
 
@@ -66,28 +75,41 @@ function App() {
       <header className="App-header">
 
         <h1>🎶 SpotiView 🎶</h1>
-        <p>By Jonathan, Lester, and Thomas</p>
-
+        
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
-            Login to Spotify
-            </a>
-
-          : <button onClick={releaseToken}>Logout of Spotify</button>
+          <button style={{backgroundColor:"#2C5F2D",
+                          border:"none",
+                          color:"#97BC62FF",
+                          borderStyle:"outset",
+                          padding:"1vh",
+                          borderWidth:"0.8vh",
+                          fontSize: "calc(10px + 2vmin)"
+                        }} onClick={goToAuth}>Login to Spotify</button>
+          : <button style={{backgroundColor:"#2C5F2D",
+                            border:"none",
+                            color:"#97BC62FF",
+                            borderStyle:"outset",
+                            padding:"1vh",
+                            borderWidth:"0.8vh",
+                            fontSize: "calc(10px + 2vmin)"
+                        }}onClick={releaseToken}>Logout of Spotify</button>
         }
+
 
         {token ?
           // Display artist form
-          <form onSubmit={searchArtists}>
+          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+            <p>Search for Artists</p>
+            <form onSubmit={searchArtists}>
             <input type="text" onChange={e => setSearchKey(e.target.value)}/>
             <button type={"submit"}>Search</button>
           </form>
-
+          </div>
           : <p>Please Login to Spotify to Continue...</p>
         }
 
         {processArtists()}
-
+        <p>Webapp written by Jonathan, Lester, and Thomas</p>
       </header>
     </div>
   );
