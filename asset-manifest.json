@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/hackthejob2022/static/css/main.073c9b0a.css",
-    "main.js": "/hackthejob2022/static/js/main.e9518814.js",
+    "main.css": "/hackthejob2022/static/css/main.38923eaf.css",
+    "main.js": "/hackthejob2022/static/js/main.f9d341f5.js",
     "static/js/787.dd5fd835.chunk.js": "/hackthejob2022/static/js/787.dd5fd835.chunk.js",
-    "static/media/logo.svg": "/hackthejob2022/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/hackthejob2022/index.html",
-    "main.073c9b0a.css.map": "/hackthejob2022/static/css/main.073c9b0a.css.map",
-    "main.e9518814.js.map": "/hackthejob2022/static/js/main.e9518814.js.map",
+    "main.38923eaf.css.map": "/hackthejob2022/static/css/main.38923eaf.css.map",
+    "main.f9d341f5.js.map": "/hackthejob2022/static/js/main.f9d341f5.js.map",
     "787.dd5fd835.chunk.js.map": "/hackthejob2022/static/js/787.dd5fd835.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.e9518814.js"
+    "static/css/main.38923eaf.css",
+    "static/js/main.f9d341f5.js"
   ]
 }
