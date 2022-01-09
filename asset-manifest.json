@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/hackthejob2022/static/css/main.38923eaf.css",
-    "main.js": "/hackthejob2022/static/js/main.f9d341f5.js",
+    "main.css": "/hackthejob2022/static/css/main.f416b617.css",
+    "main.js": "/hackthejob2022/static/js/main.bac591d8.js",
     "static/js/787.dd5fd835.chunk.js": "/hackthejob2022/static/js/787.dd5fd835.chunk.js",
     "index.html": "/hackthejob2022/index.html",
-    "main.38923eaf.css.map": "/hackthejob2022/static/css/main.38923eaf.css.map",
-    "main.f9d341f5.js.map": "/hackthejob2022/static/js/main.f9d341f5.js.map",
+    "main.f416b617.css.map": "/hackthejob2022/static/css/main.f416b617.css.map",
+    "main.bac591d8.js.map": "/hackthejob2022/static/js/main.bac591d8.js.map",
     "787.dd5fd835.chunk.js.map": "/hackthejob2022/static/js/787.dd5fd835.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.38923eaf.css",
-    "static/js/main.f9d341f5.js"
+    "static/css/main.f416b617.css",
+    "static/js/main.bac591d8.js"
   ]
 }
