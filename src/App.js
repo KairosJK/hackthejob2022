@@ -19,10 +19,13 @@ function App() {
   const [artists, setArtists] = useState([]) // Empty array, will be used to store artist data
   const [songSearchKey, setSongSearchKey] = useState("")// Song Searchkey for user
   const [songs, setSongs]  = useState([]) // Empty array, will be used to store song data
+  const [albumSearchKey, setAlbumSearchKey] = useState("")
+  const [albums, setAlbums] = useState([])
   const [playlistSearchKey, setPlaylistSearchKey] = useState("")
   const [playlists, setPlaylists] = useState([])
   const [podcastSearchKey, setPodcastSearchKey] = useState("")
   const [podcasts, setPodcasts] = useState([])
+  
 
   useEffect( () => {
     const hash = window.location.hash // Grabs Hash from pages URL
@@ -118,6 +121,38 @@ function App() {
       )
     }
   }
+
+  const searchAlbums = async (e) => {
+    e.preventDefault()
+    const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        authorization: `Bearer ${token}`
+      },
+      params: {
+        q: albumSearchKey,
+        type: "album"
+      }
+    })
+    console.log(data)
+    setAlbums(data.albums.items)
+  }
+
+  
+  const processAlbums = () => {
+    if (albums.length > 0) {
+      const album = albums[0]
+      return (
+        <div key={album.id}>
+          <br></br>
+          {album.images.length ? <img src={album.images[0].url}/> : <div>No Image could be found</div>}
+          <p style={{fontWeight:"bold"}}>{album.name}</p>
+          <p style={{fontWeight:"bold"}}>{album.artists[0].name}</p>
+        </div>
+      )
+    }
+  }
+  
+  
 
   const searchPlaylists = async (e) => {
     e.preventDefault()
@@ -250,6 +285,21 @@ function App() {
         {token ?
           // Display artist form
           <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+            <p>Search for Albums</p>
+            <form onSubmit={searchAlbums}>
+            <input type="text" onChange={albumPrompt => setAlbumSearchKey(albumPrompt.target.value)}/>
+            <button type={"submit"}>Search</button>
+          </form>
+          </div>
+
+          : <></> // No Else
+        }
+
+        {processAlbums()}
+
+        {token ?
+          // Display artist form
+          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
             <p>Search for Playlists</p>
             <form onSubmit={searchPlaylists}>
             <input type="text" onChange={playlistPrompt => setPlaylistSearchKey(playlistPrompt.target.value)}/>
@@ -267,7 +317,7 @@ function App() {
           <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
             <p>Search for Podcasts</p>
             <form onSubmit={searchPodcasts}>
-            <input type="text" onChange={playlistPrompt => setPodcastSearchKey(playlistPrompt.target.value)}/>
+            <input type="text" onChange={podcastPrompt => setPodcastSearchKey(podcastPrompt.target.value)}/>
             <button type={"submit"}>Search</button>
           </form>
           </div>
