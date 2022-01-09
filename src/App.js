@@ -65,13 +65,15 @@ function App() {
   const processArtists = () => {
     if (artists.length > 0) {
       const artist = artists[0]
+      const artist_id = artist.id;
       return (
         <div key={artist.id}>
           <br></br>
           {artist.images.length ? <img src={artist.images[0].url}/> : <div>No Image could be found</div>}
           <p style={{fontWeight:"bold"}}>{artist.name}</p>
-          <p style={{fontWeight:"bold"}}>{artist.genres[0]}</p>
+          <p style={{fontWeight:"bold"}}>Associated Genre: {artist.genres[0]}</p>
           <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p>
+          <iframe src={`https://open.spotify.com/embed/artist/${artist_id}`} width="450" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
       )
     }
@@ -108,6 +110,7 @@ function App() {
   const processSongs = () => {
     if (songs.length > 0) {
       const track = songs[0]
+      const track_id = track.id;
       return (
         <div key={track.id}>
           <br></br>
@@ -116,7 +119,7 @@ function App() {
           <p style={{fontWeight:"bold"}}>{track.album.name}</p>
           <p style={{fontWeight:"bold"}}>Track Number {track.track_number}</p>
           <p style={{fontWeight:"bold"}}>Track Duration {msToMins(track.duration_ms)}</p>
-          {/* <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p> */}
+          <iframe src={`https://open.spotify.com/embed/track/${track_id}`} width="450" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
       )
     }
@@ -141,12 +144,16 @@ function App() {
   const processAlbums = () => {
     if (albums.length > 0) {
       const album = albums[0]
+      const album_id = album.id
       return (
         <div key={album.id}>
           <br></br>
           {album.images.length ? <img src={album.images[0].url}/> : <div>No Image could be found</div>}
           <p style={{fontWeight:"bold"}}>{album.name}</p>
-          <p style={{fontWeight:"bold"}}>{album.artists[0].name}</p>
+          <p style={{fontWeight:"bold"}}>Artist: {album.artists[0].name}</p>
+          <p style={{fontWeight:"bold"}}>Release Date: {album.release_date}</p>
+          <p style={{fontWeight:"bold"}}>Total Tracks: {album.total_tracks}</p>
+          <iframe src={`https://open.spotify.com/embed/album/${album_id}`} width="450" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
       )
     }
@@ -179,9 +186,9 @@ function App() {
           <br></br>
           {playlist.images.length ? <img src={playlist.images[0].url}/> : <div>No Image could be found</div>}
           <p style={{fontWeight:"bold"}}>{playlist.name}</p>
-          <p style={{fontWeight:"bold"}}>{playlist.owner.display_name}</p>
-          <p style={{fontWeight:"bold"}}>{playlist.description}</p>
-          <iframe src={`https://open.spotify.com/embed/playlist/${playlist_id}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+          <p style={{fontWeight:"bold"}}>Created by: {playlist.owner.display_name}</p>
+          <p>{playlist.description}</p>
+          <iframe src={`https://open.spotify.com/embed/playlist/${playlist_id}`} width="450" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
       )
     }
@@ -206,13 +213,15 @@ function App() {
   const processPodcasts = () => {
     if (podcasts.length > 0) {
       const show = podcasts[0]
+      const show_id = show.id
       return (
         <div key={show.id}>
           <br></br>
           {show.images.length ? <img src={show.images[0].url}/> : <div>No Image could be found</div>}
           <p style={{fontWeight:"bold"}}>{show.name}</p>
-          <p style={{fontWeight:"bold"}}>{show.total_episodes} Episodes</p>
-          <p style={{fontWeight:"bold"}}>{show.description}</p>
+          <p style={{fontWeight:"bold"}}>Total Episodes: {show.total_episodes}</p>
+          <p style={{overflowWrap: "normal"}}>{show.description}</p>
+          <iframe src={`https://open.spotify.com/embed/show/${show_id}`} width="450" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
       )
     }
@@ -235,95 +244,83 @@ function App() {
           <button style={{backgroundColor:"#2C5F2D",
                           border:"none",
                           color:"#97BC62FF",
-                          borderStyle:"outset",
                           padding:"1vh",
+                          borderStyle: "double",
+                          margin:"10px",
                           borderWidth:"0.8vh",
                           fontSize: "calc(10px + 2vmin)"
                         }} onClick={goToAuth}>Login to Spotify</button>
           : <button style={{backgroundColor:"#2C5F2D",
                             border:"none",
                             color:"#97BC62FF",
-                            borderStyle:"outset",
                             padding:"1vh",
+                            borderStyle: "double",
+                            margin:"10px",
                             borderWidth:"0.8vh",
                             fontSize: "calc(10px + 2vmin)"
                         }}onClick={releaseToken}>Logout of Spotify</button>
         }
 
-
         {token ?
-          // Display artist form
-          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
-            <p>Search for Artists</p>
-            <form onSubmit={searchArtists}>
-            <input type="text" onChange={e => setSearchKey(e.target.value)}/>
-            <button type={"submit"}>Search</button>
-          </form>
-          </div>
 
+          <div className="rowDiv">
+            {/*Search Artists Box*/}
+            <div style={{backgroundColor:"#2C5F2D",margin:"10px",border:"none",color:"#97BC62FF",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)",flexDirection:"row"}}>
+            <p>Search for Artists</p>
+              <form onSubmit={searchArtists}>
+                <input type="text" onChange={e => setSearchKey(e.target.value)}/>
+                <button type={"submit"}>Search</button>
+              </form>
+            </div>
+
+            {/*Search Songs Box*/}
+            <div style={{backgroundColor:"#2C5F2D",margin:"10px",border:"none",color:"#97BC62FF",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)",flexDirection:"row"}}>
+            <p>Search for Songs</p>
+              <form onSubmit={searchSongs}>
+                <input type="text" onChange={songPrompt => setSongSearchKey(songPrompt.target.value)}/>
+                <button type={"submit"}>Search</button>
+              </form>
+            </div>
+
+            {/*Search Albums Box*/}
+            <div style={{backgroundColor:"#2C5F2D",margin:"10px",border:"none",color:"#97BC62FF",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)",flexDirection:"row"}}>
+              <p>Search for Albums</p>
+              <form onSubmit={searchAlbums}>
+                <input type="text" onChange={albumPrompt => setAlbumSearchKey(albumPrompt.target.value)}/>
+                <button type={"submit"}>Search</button>
+              </form>
+            </div>
+
+            {/*Search Playlists Box*/}
+            <div style={{backgroundColor:"#2C5F2D",margin:"10px",border:"none",color:"#97BC62FF",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+              <p>Search for Playlists</p>
+              <form onSubmit={searchPlaylists}>
+                <input type="text" onChange={playlistPrompt => setPlaylistSearchKey(playlistPrompt.target.value)}/>
+                <button type={"submit"}>Search</button>
+              </form>
+            </div>
+
+            {/*Search Podcasts Box*/}
+            <div style={{backgroundColor:"#2C5F2D",margin:"10px",border:"none",color:"#97BC62FF",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+              <p>Search for Podcasts</p>
+              <form onSubmit={searchPodcasts}>
+                <input type="text" onChange={podcastPrompt => setPodcastSearchKey(podcastPrompt.target.value)}/>
+                <button type={"submit"}>Search</button>
+              </form>
+            </div>
+          </div>
+        
+          /*Simple Else*/
           : <p>Please Login to Spotify to Continue...</p>
         }
 
         {processArtists()}
 
-
-        {token ?
-          // Display artist form
-          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
-            <p>Search for Songs</p>
-            <form onSubmit={searchSongs}>
-            <input type="text" onChange={songPrompt => setSongSearchKey(songPrompt.target.value)}/>
-            <button type={"submit"}>Search</button>
-          </form>
-          </div>
-
-          : <></> // No Else
-        }
-
         {processSongs()}
-
-        {token ?
-          // Display artist form
-          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
-            <p>Search for Albums</p>
-            <form onSubmit={searchAlbums}>
-            <input type="text" onChange={albumPrompt => setAlbumSearchKey(albumPrompt.target.value)}/>
-            <button type={"submit"}>Search</button>
-          </form>
-          </div>
-
-          : <></> // No Else
-        }
 
         {processAlbums()}
 
-        {token ?
-          // Display artist form
-          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
-            <p>Search for Playlists</p>
-            <form onSubmit={searchPlaylists}>
-            <input type="text" onChange={playlistPrompt => setPlaylistSearchKey(playlistPrompt.target.value)}/>
-            <button type={"submit"}>Search</button>
-          </form>
-          </div>
-
-          : <></> // No Else
-        }
-
         {processPlaylists()}
-
-        {token ?
-          // Display artist form
-          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
-            <p>Search for Podcasts</p>
-            <form onSubmit={searchPodcasts}>
-            <input type="text" onChange={podcastPrompt => setPodcastSearchKey(podcastPrompt.target.value)}/>
-            <button type={"submit"}>Search</button>
-          </form>
-          </div>
-
-          : <></> // No Else
-        }
 
         {processPodcasts()}
 

@@ -8,18 +8,55 @@
 .App-header {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   font-size: calc(10px + 2vmin);
 }
 
 .App-Base {
-
+  background-color:"#2C5F2D";
+  border:"none";
+  color:"#97BC62FF";
+  border-style:"outset";
+  padding:"1vh";
+  margin:"10px";
+  border-width:"0.8vh";
+  font-size: "calc(10px + 2vmin)";
 }
 
 img {
   height: 50vh;
   width: 50vh;
   border: 2vh solid #2C5F2D;
+}
+
+button {
+  background-color:#2C5F2D;
+  border:none;
+  color:#97BC62FF;
+  padding:1vh;
+  border-width:0.8vh;
+  font-size: calc(1.5vmin);
+  margin: 5px;
+}
+
+form {
+  padding: 5px;
+  background-color: #97BC62FF;
+  border: 2px solid #2C5F2D;
+  font-size: calc(1.5vmin);
+}
+
+input[type=text] {
+  background-color: #97BC62FF;
+  color: #2C5F2D;
+  border: 2px solid #2C5F2D;
+  margin-right: 5px;
+}
+
+.rowDiv {
+  flex-direction: row;
+  display: flex;
+  word-wrap: break-word;
 }
