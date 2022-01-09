@@ -10,7 +10,7 @@ function App() {
   // All parts of custom URL piecemeal for easy reading
   const CLIENT_ID = "a3e3bd7621534326b6974b50299a1f1b" // App ID on Spotify developer portal
   const RESPONSE_TYPE = "token" // Request the token back from Spotify
-  const REDIRECT_URI = "http://localhost:3000/hackthejob2022"
+  const REDIRECT_URI = "https://kairosjk.github.io/hackthejob2022/"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize" // Website to authorize login and account
   
   const [token, setToken] = useState("") // Users token
