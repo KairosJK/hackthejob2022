@@ -56,17 +56,32 @@ function App() {
   }
 
   const processArtists = () => {
-    return artists.map(artist => (
-      <div key={artist.id}>
-        <br></br>
-        {artist.images.length ? <img src={artist.images[0].url}/> : <div>No Image could be found</div>}
-        <p style={{fontWeight:"bold"}}>{artist.name}</p>
-        <p style={{fontWeight:"bold"}}>{artist.genres[0]}</p>
-        <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p>
-      </div>
-    ))
+    if (artists.length > 0) {
+      const artist = artists[0]
+      return (
+        <div key={artist.id}>
+          <br></br>
+          {artist.images.length ? <img src={artist.images[0].url}/> : <div>No Image could be found</div>}
+          <p style={{fontWeight:"bold"}}>{artist.name}</p>
+          <p style={{fontWeight:"bold"}}>{artist.genres[0]}</p>
+          <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p>
+        </div>
+      )
+    }
   }
 
+
+
+  // Miliseconds To Minutes Conversion
+  const msToMins = (ms) => {
+    var minutesDec = ms / 60000
+    var minutes = minutesDec - minutesDec % 1
+    var seconds = Math.ceil((minutesDec - minutes) * 60)
+
+    return `${minutes}:${seconds}`
+  }
+
+  // Search Song On Spotify API
   const searchSongs = async (song) => {
     song.preventDefault()
     const {data} = await axios.get("https://api.spotify.com/v1/search", {
@@ -82,16 +97,22 @@ function App() {
     setSongs(data.tracks.items)
   }
 
+  // Process Songs from API Request
   const processSongs = () => {
-    return songs.map(track => (
-      <div key={track.id}>
-        <br></br>
-        {track.album.images.length ? <img src={track.album.images[0].url}/> : <div>No Image could be found</div>}
-        <p style={{fontWeight:"bold"}}>{track.name}</p>
-        <p style={{fontWeight:"bold"}}>{track.track_number}</p>
-        {/* <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p> */}
-      </div>
-    ), 0)
+    if (songs.length > 0) {
+      const track = songs[0]
+      return (
+        <div key={track.id}>
+          <br></br>
+          {track.album.images.length ? <img src={track.album.images[0].url}/> : <div>No Image could be found</div>}
+          <p style={{fontWeight:"bold"}}>{track.name}</p>
+          <p style={{fontWeight:"bold"}}>{track.album.name}</p>
+          <p style={{fontWeight:"bold"}}>Track Number {track.track_number}</p>
+          <p style={{fontWeight:"bold"}}>Track Duration {msToMins(track.duration_ms)}</p>
+          {/* <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p> */}
+        </div>
+      )
+    }
   }
 
   const goToAuth = () => {
@@ -139,6 +160,9 @@ function App() {
           : <p>Please Login to Spotify to Continue...</p>
         }
 
+        {processArtists()}
+
+
         {token ?
           // Display artist form
           <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
@@ -152,7 +176,6 @@ function App() {
           : <></> // No Else
         }
 
-        {processArtists()}
         {processSongs()}
 
         <p>Webapp written by Jonathan, Lester, and Thomas</p>
