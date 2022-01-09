@@ -5,9 +5,15 @@ A extremely simple webpage for our first hackathon, about something we all enjoy
 See simple analytics to artists, songs, and albums. 
 Just log into your spotify account, and search to your hearts content
 Data available: 
--Artist's Image
--Artist's Name
--Artist's Genres 
--Artist's Spotify Followers
+
+> Artist's Image
+
+> Artist's Name
+
+> Artist's Genres 
+
+> Artist's Spotify Followers
+
+## Note: You need a premium account for the search to work, in line with Spotify's API policy
 
 `Written by Jonathan, Lester, and Thomas`
