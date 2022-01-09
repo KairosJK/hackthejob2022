@@ -9,6 +9,7 @@ function App() {
 
   // All parts of custom URL piecemeal for easy reading
   const CLIENT_ID = "a3e3bd7621534326b6974b50299a1f1b" // App ID on Spotify developer portal
+  // const SCOPES = "user-top-read"
   const RESPONSE_TYPE = "token" // Request the token back from Spotify
   const REDIRECT_URI = "http://localhost:3000/hackthejob2022"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize" // Website to authorize login and account
@@ -18,7 +19,10 @@ function App() {
   const [artists, setArtists] = useState([]) // Empty array, will be used to store artist data
   const [songSearchKey, setSongSearchKey] = useState("")// Song Searchkey for user
   const [songs, setSongs]  = useState([]) // Empty array, will be used to store song data
-
+  const [playlistSearchKey, setPlaylistSearchKey] = useState("")
+  const [playlists, setPlaylists] = useState([])
+  const [podcastSearchKey, setPodcastSearchKey] = useState("")
+  const [podcasts, setPodcasts] = useState([])
 
   useEffect( () => {
     const hash = window.location.hash // Grabs Hash from pages URL
@@ -96,7 +100,7 @@ function App() {
     console.log(data)
     setSongs(data.tracks.items)
   }
-
+  
   // Process Songs from API Request
   const processSongs = () => {
     if (songs.length > 0) {
@@ -115,6 +119,71 @@ function App() {
     }
   }
 
+  const searchPlaylists = async (e) => {
+    e.preventDefault()
+    const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        authorization: `Bearer ${token}`
+      },
+      params: {
+        q: playlistSearchKey,
+        type: "playlist"
+      }
+    })
+    console.log(data)
+    setPlaylists(data.playlists.items)
+  }
+
+  const processPlaylists = () => {
+    if (playlists.length > 0) {
+      const playlist = playlists[0]
+      const playlist_id = playlist.id
+      console.log(playlist_id)
+      return (
+        <div key={playlist.id}>
+          <br></br>
+          {playlist.images.length ? <img src={playlist.images[0].url}/> : <div>No Image could be found</div>}
+          <p style={{fontWeight:"bold"}}>{playlist.name}</p>
+          <p style={{fontWeight:"bold"}}>{playlist.owner.display_name}</p>
+          <p style={{fontWeight:"bold"}}>{playlist.description}</p>
+          <iframe src={`https://open.spotify.com/embed/playlist/${playlist_id}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+      )
+    }
+  }
+
+  const searchPodcasts = async (e) => {
+    e.preventDefault()
+    const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        authorization: `Bearer ${token}`
+      },
+      params: {
+        q: podcastSearchKey,
+        type: "show"
+      }
+    })
+    console.log(data)
+    setPodcasts(data.shows.items)
+  }
+
+  
+  const processPodcasts = () => {
+    if (podcasts.length > 0) {
+      const show = podcasts[0]
+      return (
+        <div key={show.id}>
+          <br></br>
+          {show.images.length ? <img src={show.images[0].url}/> : <div>No Image could be found</div>}
+          <p style={{fontWeight:"bold"}}>{show.name}</p>
+          <p style={{fontWeight:"bold"}}>{show.total_episodes} Episodes</p>
+          <p style={{fontWeight:"bold"}}>{show.description}</p>
+        </div>
+      )
+    }
+  }
+  
+  
   const goToAuth = () => {
     // Redirects user to Authentication and Login
     window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
@@ -177,6 +246,36 @@ function App() {
         }
 
         {processSongs()}
+
+        {token ?
+          // Display artist form
+          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+            <p>Search for Playlists</p>
+            <form onSubmit={searchPlaylists}>
+            <input type="text" onChange={playlistPrompt => setPlaylistSearchKey(playlistPrompt.target.value)}/>
+            <button type={"submit"}>Search</button>
+          </form>
+          </div>
+
+          : <></> // No Else
+        }
+
+        {processPlaylists()}
+
+        {token ?
+          // Display artist form
+          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+            <p>Search for Podcasts</p>
+            <form onSubmit={searchPodcasts}>
+            <input type="text" onChange={playlistPrompt => setPodcastSearchKey(playlistPrompt.target.value)}/>
+            <button type={"submit"}>Search</button>
+          </form>
+          </div>
+
+          : <></> // No Else
+        }
+
+        {processPodcasts()}
 
         <p>Webapp written by Jonathan, Lester, and Thomas</p>
       </header>
