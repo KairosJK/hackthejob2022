@@ -16,6 +16,9 @@ function App() {
   const [token, setToken] = useState("") // Users token
   const [searchKey, setSearchKey] = useState("") // Artist Searchkey for user
   const [artists, setArtists] = useState([]) // Empty array, will be used to store artist data
+  const [songSearchKey, setSongSearchKey] = useState("")// Song Searchkey for user
+  const [songs, setSongs]  = useState([]) // Empty array, will be used to store song data
+
 
   useEffect( () => {
     const hash = window.location.hash // Grabs Hash from pages URL
@@ -64,6 +67,33 @@ function App() {
     ))
   }
 
+  const searchSongs = async (song) => {
+    song.preventDefault()
+    const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        q: songSearchKey,
+        type:"track"
+      }
+    })
+    console.log(data)
+    setSongs(data.tracks.items)
+  }
+
+  const processSongs = () => {
+    return songs.map(track => (
+      <div key={track.id}>
+        <br></br>
+        {track.album.images.length ? <img src={track.album.images[0].url}/> : <div>No Image could be found</div>}
+        <p style={{fontWeight:"bold"}}>{track.name}</p>
+        <p style={{fontWeight:"bold"}}>{track.track_number}</p>
+        {/* <p style={{fontWeight:"bold"}}>Spotify Followers: {artist.followers.total}</p> */}
+      </div>
+    ), 0)
+  }
+
   const goToAuth = () => {
     // Redirects user to Authentication and Login
     window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
@@ -105,10 +135,26 @@ function App() {
             <button type={"submit"}>Search</button>
           </form>
           </div>
+
           : <p>Please Login to Spotify to Continue...</p>
         }
 
+        {token ?
+          // Display artist form
+          <div style={{backgroundColor:"#2C5F2D",border:"none",color:"#97BC62FF",borderStyle:"outset",padding:"1vh",borderWidth:"0.8vh",fontSize: "calc(10px + 2vmin)"}}>
+            <p>Search for Songs</p>
+            <form onSubmit={searchSongs}>
+            <input type="text" onChange={songPrompt => setSongSearchKey(songPrompt.target.value)}/>
+            <button type={"submit"}>Search</button>
+          </form>
+          </div>
+
+          : <></> // No Else
+        }
+
         {processArtists()}
+        {processSongs()}
+
         <p>Webapp written by Jonathan, Lester, and Thomas</p>
       </header>
     </div>
